@@ -2,10 +2,10 @@ name: Pull Sleeper data
 
 on:
   # Scheduled runs — cron is ALWAYS in UTC.
-  # 03:00 UTC Wed = 11:00 PM EDT Tue  -> pre-waiver digest (waivers clear Wed 3 AM)
+  # 01:00 UTC Wed = 9:00 PM EDT Tue   -> pre-waiver digest (waivers clear Wed 3 AM)
   # 12:00 UTC Sun = 8:00 AM EDT Sun   -> lineup-setting digest
   schedule:
-    - cron: "0 3 * * WED"
+    - cron: "0 1 * * WED"
     - cron: "0 12 * * SUN"
   # Manual trigger: Actions tab -> this workflow -> "Run workflow" button
   workflow_dispatch:

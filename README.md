@@ -14,15 +14,18 @@ clone doubles as the Claude Cowork folder.
 4. Clone the repo somewhere and point Claude Cowork at that folder.
 
 ## Weekly flow
-- **Tue ~11 PM ET**: Action commits fresh digest (waivers clear Wed 3 AM).
-- **Wed**: open Cowork → "pull latest and give me waiver claims" → tap them into Sleeper.
+- **Tue ~9 PM ET**: Action commits fresh digest.
+- **Tue before bed**: open Cowork → "pull latest and give me waiver claims" → tap them into Sleeper.
+- **Wed 3 AM ET**: waivers clear with your claims already in.
 - **Sun ~8 AM ET**: Action commits fresh digest → "pull latest, set my lineup" → tap swaps in.
 
 ## How the scheduling works (since it's your first rodeo)
 - `on.schedule.cron` uses **UTC**, standard 5-field cron (`min hour dom month dow`).
-  `0 3 * * WED` = 03:00 UTC Wednesday = 11 PM Tuesday EDT.
-  ⚠️ When DST ends in November, these drift 1 hour later ET. Either live with it
-  or update the crons to `0 4` / `0 13`.
+  `0 1 * * WED` = 01:00 UTC Wednesday = 9 PM Tuesday EDT, a few hours ahead of
+  the Wed 3 AM waiver run.
+  ⚠️ When DST ends in November, these drift 1 hour earlier ET (the Tue pull
+  lands at 8 PM). Either live with it or update the crons to `0 2` / `0 13`
+  to hold 9 PM Tue / 8 AM Sun.
 - `workflow_dispatch` adds the manual **Run workflow** button in the Actions tab —
   great for testing and for ad-hoc pulls (e.g., before a trade decision).
 - Scheduled runs execute on the default branch only, and GitHub may delay them
