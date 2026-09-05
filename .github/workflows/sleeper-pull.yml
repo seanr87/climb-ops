@@ -1,0 +1,36 @@
+name: Pull Sleeper data
+
+on:
+  # Scheduled runs — cron is ALWAYS in UTC.
+  # 03:00 UTC Wed = 11:00 PM EDT Tue  -> pre-waiver digest (waivers clear Wed 3 AM)
+  # 12:00 UTC Sun = 8:00 AM EDT Sun   -> lineup-setting digest
+  schedule:
+    - cron: "0 3 * * WED"
+    - cron: "0 12 * * SUN"
+  # Manual trigger: Actions tab -> this workflow -> "Run workflow" button
+  workflow_dispatch:
+
+permissions:
+  contents: write   # allows the workflow to commit back to the repo
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pull Sleeper data
+        run: python scripts/pull_sleeper.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "sleeper-bot"
+          git config user.email "actions@github.com"
+          git add data/
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Sleeper digest $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
